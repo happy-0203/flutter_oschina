@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_oschina/widgets/navigation_icon_view.dart';
 import 'package:flutter_oschina/pages/my_drawer.dart';
+import 'package:flutter_oschina/pages/mine_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -50,9 +51,7 @@ class _HomePageState extends State<HomePage> {
       Container(
         color: Colors.yellow,
       ),
-      Container(
-        color: Colors.blue,
-      ),
+      MinePage(),
     ];
 
     _pageController = PageController(initialPage: _currentIndex);
@@ -61,27 +60,30 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text(
-          _appBarTitle[_currentIndex],
-          style: TextStyle(color: Colors.white),
+//      appBar: AppBar(
+//        elevation: 0.0,
+//        iconTheme: IconThemeData(color: Colors.white),
+//        title: Text(
+//          _appBarTitle[_currentIndex],
+//          style: TextStyle(color: Colors.white),
+//        ),
+//      ),
+      body: Container(
+        //padding: EdgeInsets.all(0.0),
+        child: PageView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return _pages[index];
+          },
+          physics: NeverScrollableScrollPhysics(),
+          //禁止滑动
+          controller: _pageController,
+          itemCount: _pages.length,
+          onPageChanged: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
         ),
-      ),
-      body: PageView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          return _pages[index];
-        },
-        physics: NeverScrollableScrollPhysics(),
-        //禁止滑动
-        controller: _pageController,
-        itemCount: _pages.length,
-        onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: _navigationIconViews.map((view) => view.item).toList(),
